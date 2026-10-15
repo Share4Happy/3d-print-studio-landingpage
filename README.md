@@ -15,6 +15,7 @@
 - [Công nghệ sử dụng](#-công-nghệ-sử-dụng)
 - [Cấu trúc dự án](#-cấu-trúc-dự-án)
 - [Cài đặt & Chạy](#-cài-đặt--chạy)
+- [Triển khai (Deploy)](#-triển-khai-deploy)
 - [Tùy chỉnh](#-tùy-chỉnh)
 - [Tích hợp API](#-tích-hợp-api)
 - [Responsive Design](#-responsive-design)
@@ -228,6 +229,37 @@ php -S localhost:8000
 1. Cài đặt extension "Live Server"
 2. Right-click vào `index.html`
 3. Chọn "Open with Live Server"
+
+## 🌐 Triển khai (Deploy)
+
+Trang web được deploy tự động lên **GitHub Pages** thông qua GitHub Actions
+(`.github/workflows/deploy.yml`). Mỗi lần push lên nhánh `main`, workflow sẽ:
+
+1. Chuẩn bị các file tĩnh (`index.html`, `asset/`, `css/`, `js/`, ...).
+2. Upload artifact và deploy lên GitHub Pages.
+
+### Bật GitHub Pages lần đầu
+
+1. Vào repository → **Settings** → **Pages**.
+2. Tại **Build and deployment → Source**, chọn **GitHub Actions**.
+3. Push lên nhánh `main` (hoặc chạy workflow thủ công trong tab **Actions**) để kích hoạt deploy.
+
+### Custom domain
+
+Dự án dùng custom domain `3dprintstudio.share4happy.com`:
+
+- File `CNAME` ở thư mục gốc chứa giá trị `3dprintstudio.share4happy.com`.
+- Workflow cũng truyền `cname` cho `actions/configure-pages`.
+- Trong **Settings → Pages → Custom domain**, nhập `3dprintstudio.share4happy.com` và bật **Enforce HTTPS**.
+- Cấu hình DNS tại nhà cung cấp tên miền trỏ về GitHub Pages:
+  - **A records** (apex/root domain): `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+  - **CNAME record**: trỏ `www` (hoặc subdomain) tới `<user>.github.io`.
+
+> Nếu chuyển sang dùng URL mặc định `https://<user>.github.io/<repo>/`, hãy xóa file `CNAME`, bỏ tham số `cname` trong workflow và đặt `base: '/<repo>/'` cho các đường dẫn asset.
+
+### Lưu ý về SEO
+
+Sau khi đổi domain, cập nhật lại `canonical`, `og:url` trong `index.html`, `sitemap.xml` và `robots.txt` cho khớp với domain thực tế.
 
 ## 🎨 Tùy chỉnh
 
