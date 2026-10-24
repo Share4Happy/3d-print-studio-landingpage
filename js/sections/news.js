@@ -209,10 +209,11 @@ function updateCarousel(animate = true) {
   carouselState.currentTranslate = -offset;
   carouselState.prevTranslate = -offset;
 
-  // Update button states
-  const maxIndex = carouselState.totalCards - carouselState.visibleCards;
-  if (prevBtn) prevBtn.disabled = carouselState.currentIndex <= 0;
-  if (nextBtn) nextBtn.disabled = carouselState.currentIndex >= maxIndex;
+  // Update button states (clamp để tránh lỗi khi ở trạng thái ảo của infinite loop)
+  const maxIndex = Math.max(0, carouselState.totalCards - carouselState.visibleCards);
+  const clampedIndex = Math.min(carouselState.currentIndex, maxIndex);
+  if (prevBtn) prevBtn.disabled = clampedIndex <= 0;
+  if (nextBtn) nextBtn.disabled = clampedIndex >= maxIndex;
 
   // Update dots
   updateDots();
@@ -242,10 +243,11 @@ function updateDots() {
     }
   }
 
-  // Update active state
+  // Update active state (clamp khi ở trạng thái ảo của infinite loop)
+  const clampedIndex = Math.min(carouselState.currentIndex, totalPages - 1);
   const dots = dotsContainer.querySelectorAll('.news-carousel-dot');
   dots.forEach((dot, i) => {
-    dot.classList.toggle('active', i === carouselState.currentIndex);
+    dot.classList.toggle('active', i === clampedIndex);
   });
 }
 
@@ -280,18 +282,27 @@ function prevSlide() {
 }
 
 /**
- * Auto-play carousel
+ * Auto-play carousel với infinite loop mượt:
+ * Khi đến slide cuối, pause một nhịp rồi silent-jump về 0 (không animate),
+ * sau đó tiếp tục chạy tiếp — người dùng không thấy giật.
  */
 function startAutoPlay() {
   stopAutoPlay();
   carouselState.autoPlayTimer = setInterval(() => {
     const maxIndex = carouselState.totalCards - carouselState.visibleCards;
     if (carouselState.currentIndex >= maxIndex) {
-      carouselState.currentIndex = 0;
+      // Đang ở slide cuối → animate sang "ngoài biên" thêm 1 bước (hiệu ứng tiếp tục),
+      // rồi silent-reset về 0 sau khi transition kết thúc
+      carouselState.currentIndex = maxIndex + 1;
+      updateCarousel(true); // animate ra ngoài (track sẽ chạy tới vị trí ảo)
+      setTimeout(() => {
+        carouselState.currentIndex = 0;
+        updateCarousel(false); // không animate — người dùng không thấy
+      }, 520); // 520ms > transition duration 500ms
     } else {
       carouselState.currentIndex++;
+      updateCarousel();
     }
-    updateCarousel();
   }, carouselState.autoPlayDelay);
 }
 
