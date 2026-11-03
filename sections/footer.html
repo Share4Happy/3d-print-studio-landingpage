@@ -86,25 +86,34 @@
       </div>
     </div>
 
-    <!-- Tuyên bố miễn trừ trách nhiệm (Disclaimer Box) -->
+    <!-- Tuyên bố miễn trừ trách nhiệm & Chính sách dữ liệu (Footer Policy Box) -->
     <div class="footer-disclaimer-box" id="disclaimer">
       <div class="disclaimer-header">
         <div class="disclaimer-title">
           <svg class="disclaimer-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
           </svg>
-          <strong>Tuyên bố miễn trừ trách nhiệm</strong>
+          <strong>Tuyên bố miễn trừ trách nhiệm &amp; Điều khoản dịch vụ</strong>
         </div>
-        <button type="button" class="disclaimer-detail-btn open-modal-btn" data-target="disclaimer-modal" aria-label="Xem chi tiết tuyên bố miễn trừ trách nhiệm">
-          <span>Xem chi tiết điều khoản</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </button>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="disclaimer-detail-btn open-modal-btn" data-target="privacy-modal" aria-label="Xem chính sách bảo vệ dữ liệu cá nhân">
+            <span>Chính sách dữ liệu</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+          <button type="button" class="disclaimer-detail-btn open-modal-btn" data-target="disclaimer-modal" aria-label="Xem chi tiết tuyên bố miễn trừ trách nhiệm">
+            <span>Chi tiết điều khoản</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
       </div>
       <p class="disclaimer-text">
-        Print 3D Studio cung cấp dịch vụ in 3D theo yêu cầu kỹ thuật và dữ liệu do khách hàng cung cấp. Khách hàng chịu trách nhiệm pháp lý về quyền sở hữu trí tuệ đối với mọi file thiết kế 3D. Chúng tôi bảo mật mẫu in và kiên quyết từ chối in các vật phẩm vi phạm pháp luật (vũ khí, công cụ nguy hại). Sản phẩm in 3D thực tế có dung sai kỹ thuật tiêu chuẩn và độ bền cơ lý phụ thuộc vào vật liệu quý khách lựa chọn.
+        Print 3D Studio cung cấp dịch vụ in 3D theo yêu cầu kỹ thuật và dữ liệu do khách hàng cung cấp. Khách hàng chịu trách nhiệm pháp lý về quyền sở hữu trí tuệ đối với file thiết kế. Chúng tôi bảo vệ nghiêm ngặt dữ liệu cá nhân theo Luật 91/2025/QH15, giới hạn trách nhiệm kỹ thuật minh bạch theo Luật Bảo vệ quyền lợi người tiêu dùng số 19/2023/QH15 và kiên quyết từ chối in các vật phẩm vi phạm pháp luật (vũ khí, công cụ nguy hại).
       </p>
     </div>
 
@@ -113,6 +122,10 @@
       <div class="footer-bottom-inner">
         <p class="copyright-text">&copy; 2026 Print 3D Studio. All rights reserved.</p>
         <div class="footer-bottom-links">
+          <button type="button" class="footer-bottom-link open-modal-btn" data-target="privacy-modal">
+            Chính sách bảo vệ dữ liệu cá nhân
+          </button>
+          <span class="footer-bottom-separator" aria-hidden="true">&bull;</span>
           <button type="button" class="footer-bottom-link open-modal-btn" data-target="disclaimer-modal">
             Tuyên bố miễn trừ trách nhiệm
           </button>

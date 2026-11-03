@@ -11,6 +11,13 @@ export function initModal() {
       const targetId = btn.getAttribute('data-target') || 'quote-modal';
       const targetModal = document.getElementById(targetId);
       if (targetModal) {
+        // Close any other open modal before opening target
+        modals.forEach(m => {
+          if (m !== targetModal && m.classList.contains('is-active')) {
+            m.classList.remove('is-active');
+            m.setAttribute('aria-hidden', 'true');
+          }
+        });
         targetModal.classList.add('is-active');
         targetModal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
@@ -20,7 +27,7 @@ export function initModal() {
 
   modals.forEach(modal => {
     modal.addEventListener('click', (e) => {
-      if (e.target.dataset.close === 'true') {
+      if (e.target.dataset.close === 'true' || e.target.hasAttribute('data-close') || e.target.closest('[data-close]')) {
         closeModal(modal);
       }
     });
@@ -40,5 +47,8 @@ export function initModal() {
 function closeModal(modal) {
   modal.classList.remove('is-active');
   modal.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
+  const hasOtherActive = Array.from(document.querySelectorAll('.modal')).some(m => m.classList.contains('is-active'));
+  if (!hasOtherActive) {
+    document.body.style.overflow = '';
+  }
 }

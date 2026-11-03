@@ -306,6 +306,9 @@
 
     setSubmitError(false);
 
+    const POLICY_VERSION = '2026.1';
+    const CONSENT_TEXT = 'Tôi đồng ý để Print 3D Studio lưu giữ và xử lý thông tin này nhằm mục đích liên hệ, tư vấn và gửi báo giá theo Chính sách bảo vệ dữ liệu cá nhân.';
+
     // Dữ liệu chỉ tồn tại trong RAM của trang này cho tới khi gửi xong
     const leadData = {
       fullName: fullName,
@@ -315,6 +318,8 @@
       address: address,
       source: 'Website Landing Page',
       consent: true,
+      consentText: CONSENT_TEXT,
+      policyVersion: POLICY_VERSION,
       pageUrl: window.location.href.split('#')[0],
       elapsedMs: Date.now() - PAGE_LOADED_AT,
       submittedAt: new Date().toISOString()
@@ -486,6 +491,13 @@
         const targetId = btn.getAttribute('data-target') || 'disclaimer-modal';
         const targetModal = document.getElementById(targetId);
         if (targetModal) {
+          // Đóng modal khác nếu đang mở để chuyển mượt mà giữa các chính sách
+          modals.forEach(function (m) {
+            if (m !== targetModal && m.classList.contains('is-active')) {
+              m.classList.remove('is-active');
+              m.setAttribute('aria-hidden', 'true');
+            }
+          });
           targetModal.classList.add('is-active');
           targetModal.setAttribute('aria-hidden', 'false');
           document.body.style.overflow = 'hidden';
@@ -495,7 +507,7 @@
 
     modals.forEach(function (modal) {
       modal.addEventListener('click', function (e) {
-        if (e.target.dataset.close === 'true') {
+        if (e.target.dataset.close === 'true' || e.target.hasAttribute('data-close') || e.target.closest('[data-close]')) {
           closeModal(modal);
         }
       });
@@ -514,7 +526,44 @@
     function closeModal(modal) {
       modal.classList.remove('is-active');
       modal.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
+      const hasOtherActive = Array.from(modals).some(function (m) {
+        return m.classList.contains('is-active');
+      });
+      if (!hasOtherActive) {
+        document.body.style.overflow = '';
+      }
+    }
+  }
+
+  // ============================================================
+  // 3.5. COOKIE & PRIVACY BANNER CONTROLLER
+  // ============================================================
+  function initCookieBanner() {
+    const banner = document.getElementById('cookiePrivacyBanner');
+    const btnAccept = document.getElementById('btnAcceptCookieNotice');
+    if (!banner) return;
+
+    let acknowledged = false;
+    try {
+      acknowledged = localStorage.getItem('print3d_cookie_ack') === '1';
+    } catch (e) {}
+
+    if (!acknowledged) {
+      banner.style.display = 'block';
+    }
+
+    if (btnAccept) {
+      btnAccept.addEventListener('click', function () {
+        banner.style.opacity = '0';
+        banner.style.transform = 'translateY(15px)';
+        banner.style.transition = 'all 0.3s ease';
+        setTimeout(function () {
+          banner.style.display = 'none';
+        }, 300);
+        try {
+          localStorage.setItem('print3d_cookie_ack', '1');
+        } catch (e) {}
+      });
     }
   }
 
@@ -546,6 +595,7 @@
     initHeader();
     initCTA();
     initModal();
+    initCookieBanner();
     initSmoothScroll();
     console.log('🚀 Print 3D Studio - Hệ thống JavaScript đã sẵn sàng (Tương thích file:// & http://)');
   }

@@ -304,6 +304,9 @@ async function handleFormSubmit(e) {
 
   setSubmitError(false);
 
+  const POLICY_VERSION = '2026.1';
+  const CONSENT_TEXT = 'Tôi đồng ý để Print 3D Studio lưu giữ và xử lý thông tin này nhằm mục đích liên hệ, tư vấn và gửi báo giá theo Chính sách bảo vệ dữ liệu cá nhân.';
+
   const leadData = {
     fullName,
     phone,
@@ -312,6 +315,8 @@ async function handleFormSubmit(e) {
     address,
     source: 'Website Landing Page',
     consent: true,
+    consentText: CONSENT_TEXT,
+    policyVersion: POLICY_VERSION,
     pageUrl: window.location.href.split('#')[0],
     elapsedMs: Date.now() - PAGE_LOADED_AT,
     submittedAt: new Date().toISOString()

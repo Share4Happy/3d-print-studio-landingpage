@@ -32,7 +32,7 @@ jobs:
       - name: Prepare static site
         run: |
           mkdir -p dist
-          cp -r index.html asset css js robots.txt sitemap.xml .nojekyll CNAME dist/
+          cp -r index.html privacy.html asset css js robots.txt sitemap.xml .nojekyll CNAME dist/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
